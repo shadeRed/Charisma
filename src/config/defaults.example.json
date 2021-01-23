@@ -1,0 +1,120 @@
+{
+    "guild": {
+        "whitelist": {},
+        "blacklist": {},
+
+        "prefix": "",
+
+        "locale": "America/Wisconsin",
+        "dateFormat": "llll",
+
+        "colors": {
+            "accent": "",
+            "logs": {
+                "userJoined": "#42F49B",
+                "userLeft": "#f25e44",
+                "userBanned": "#F44141",
+                "userUnbanned": "#bef244",
+                "userNameChanged": "#418EF4",
+                "userNickChanged": "#41EEF4"
+            }
+        },
+
+        "options": {
+            "deleteCooldownedAttempts": true,
+            "leveling": false,
+            "welcomeMessage": false,
+
+            "errors": {
+                "unknownCommand": true,
+                "notWhitelisted": true,
+                "isBlacklisted": true,
+                "invalidSyntax": true,
+                "noUserPerms": true,
+                "noBotPerms": true
+            },
+
+            "logs": {
+                "userJoined": false,
+                "userLeft": false,
+                "userBanned": false,
+                "userUnbanned": false,
+                "userNameChanged": false,
+                "userNickChanged": false
+            }
+        },
+
+        "config": {
+            "flavor": "upbeat",
+            "autorole": null,
+            "channels": {
+                "logs": null,
+                "selfroles": null,
+                "selfroleMessage": null
+            },
+
+            "welcomeMessage": "Welcome to **[SERVER]**, **[USERNAME]#[USERTAG]**!"
+        },
+
+        "channels": {
+            "logs": null,
+            "selfroles": null,
+            "commands": {}
+        },
+
+        "roles": {
+            "auto": null,
+            "bot": null,
+            "verified": null,
+            "leveling": {},
+            "self": {}
+        },
+
+        "leveling": {
+            "localNotificationMode": "full",
+            "globalNotificationMode": "discrete",
+            "localCurve": 1.9,
+            "roles": {}
+        },
+
+        "members": {}
+    },
+
+    "member": {},
+    
+    "user": {
+        "cooldowns": {},
+        "achievements": [],
+        "badges": [],
+        "color": "#ADCAFF",
+        "daily": -1,
+        "dailyStreak": 0
+    },
+
+    "inventory": {
+        "balance": 0,
+        "items": {},
+        "key": {},
+        "obtained": {}
+    },
+
+    "karma": {
+        "given": 0,
+        "received": 0
+    },
+
+    "experience": {
+        "user": 0,
+        "member": []
+    },
+    
+    "lavender": {
+        "prefix": ";",
+        "accent": "#9DA0CB"
+    },
+
+    "spectre": {
+        "prefix": "s;",
+        "accent": "#ADCAFF"
+    }
+}

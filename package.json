@@ -1,0 +1,39 @@
+{
+  "name": "charisma",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@discordjs/opus": "^0.3.3",
+    "array-map": "0.0.0",
+    "array-reduce": "0.0.0",
+    "arrayreduce": "^2.1.0",
+    "discord.js": "^12.4.1",
+    "ffmpeg": "0.0.4",
+    "fluent-ffmpeg": "^2.1.2",
+    "foreach": "^2.0.5",
+    "gm": "^1.23.1",
+    "indexof": "0.0.1",
+    "lodash.isarray": "^4.0.0",
+    "lodash.isequal": "^4.5.0",
+    "lodash.isobject": "^3.0.2",
+    "lodash.transform": "^4.6.0",
+    "moment": "^2.29.1",
+    "moment-duration-format": "^2.3.2",
+    "node-emoji": "^1.10.0",
+    "object-keys": "^1.1.1",
+    "progress-string": "^1.2.2",
+    "request": "^2.88.2",
+    "rethinkdb": "^2.4.2",
+    "seedrandom": "^3.0.5",
+    "yt-search": "^2.4.1",
+    "ytdl-core": "^4.0.3",
+    "ytpl": "^1.0.1"
+  }
+}

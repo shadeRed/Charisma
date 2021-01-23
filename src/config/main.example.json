@@ -1,0 +1,5 @@
+{
+    "master": "[discord master user id]",
+    "tenor": "[tenor api key]",
+    "variation": "[charisma variation (default lavender)]"
+}
