@@ -1,0 +1,575 @@
+{
+    "ban": {
+        "permissions": [
+            "DISCORD.BAN_MEMBERS"
+        ],
+        "description": "bans whoever you specify",
+        "tags": [
+            "management",
+            "admin"
+        ],
+        "hidden": false,
+        "nsfw": false,
+        "params": [
+            {
+                "type": "mention",
+                "required": true,
+                "name": "member"
+            },
+            {
+                "type": "string",
+                "required": false,
+                "name": "reason"
+            },
+            {
+                "type": "number",
+                "required": false,
+                "name": "days of messages to delete"
+            }
+        ],
+        "usage": [
+            "[userfull]"
+        ]
+    },
+    "blacklist": {
+        "permissions": [
+            "DISCORD.ADMINISTRATOR"
+        ],
+        "description": "used for managing command blacklisting",
+        "hidden": false,
+        "nsfw": false,
+        "tags": [
+            "management",
+            "admin"
+        ],
+        "params": [
+            {
+                "type": "string",
+                "required": true,
+                "name": "get | add | remove | clear"
+            },
+            {
+                "type": "mention",
+                "required": true,
+                "name": "user"
+            },
+            {
+                "type": "string",
+                "required": false,
+                "name": "command"
+            }
+        ]
+    },
+    "disable": {
+        "permissions": [
+            "DISCORD.ADMINISTRATOR"
+        ],
+        "description": "disables a specific feature on the server",
+        "hidden": false,
+        "nsfw": false,
+        "tags": [
+            "management",
+            "admin"
+        ],
+        "params": [
+            {
+                "type": "string",
+                "required": true,
+                "name": "feature"
+            }
+        ]
+    },
+    "enable": {
+        "permissions": [
+            "DISCORD.ADMINISTRATOR"
+        ],
+        "description": "enables a specific feature on the server",
+        "hidden": false,
+        "nsfw": false,
+        "tags": [
+            "management",
+            "admin"
+        ],
+        "params": [
+            {
+                "type": "string",
+                "required": true,
+                "name": "feature"
+            }
+        ]
+    },
+    "kick": {
+        "permissions": [
+            "DISCORD.KICK_MEMBERS"
+        ],
+        "description": "kicks whoever you specify",
+        "hidden": false,
+        "nsfw": false,
+        "tags": [
+            "management",
+            "admin"
+        ],
+        "params": [
+            {
+                "type": "mention",
+                "required": true,
+                "name": "member"
+            },
+            {
+                "type": "string",
+                "required": false,
+                "name": "reason"
+            }
+        ]
+    },
+    "nick": {
+        "permissions": [
+            "DISCORD.MANAGE_NICKNAMES"
+        ],
+        "description": "changes the nickname of whoever you specify to whatever you specify",
+        "tags": [
+            "management",
+            "admin"
+        ],
+        "hidden": false,
+        "nsfw": false,
+        "params": [
+            {
+                "type": "string",
+                "required": true,
+                "name": "set | remove"
+            },
+            {
+                "type": "mention",
+                "required": true,
+                "name": "user"
+            },
+            {
+                "type": "string",
+                "required": false,
+                "name": "nickname"
+            }
+        ]
+    },
+    "prune": {
+        "permissions": [
+            "DISCORD.MANAGE_MESSAGES"
+        ],
+        "description": "deletes a specified amount of messages",
+        "hidden": false,
+        "nsfw": false,
+        "tags": [
+            "management",
+            "admin"
+        ],
+        "params": [
+            {
+                "type": "number",
+                "required": true,
+                "name": "quantity"
+            }
+        ]
+    },
+    "whitelist": {
+        "permissions": [
+            "DISCORD.ADMINISTRATOR"
+        ],
+        "description": "used for managing command whitelisting",
+        "hidden": false,
+        "nsfw": false,
+        "tags": [
+            "management",
+            "admin"
+        ],
+        "params": [
+            {
+                "type": "string",
+                "required": true,
+                "name": "get | add | remove | clear"
+            },
+            {
+                "type": "string",
+                "required": true,
+                "name": "command"
+            },
+            {
+                "type": "mention",
+                "required": false,
+                "name": "user"
+            }
+        ]
+    },
+    "anime": {
+        "permissions": [],
+        "description": "easily search for anime!",
+        "hidden": false,
+        "nsfw": false,
+        "tags": [
+            "fun"
+        ],
+        "params": [
+            {
+                "type": "string",
+                "required": true,
+                "name": "search terms"
+            }
+        ]
+    },
+    "hug": {
+        "permissions": [],
+        "description": "gives the person of your choosing a big ol' hug",
+        "hidden": false,
+        "nsfw": false,
+        "tags": [
+            "fun"
+        ],
+        "params": [
+            {
+                "type": "mention",
+                "required": true,
+                "name": "user"
+            }
+        ]
+    },
+    "join": {
+        "permissions": [],
+        "description": "make me join the voice channel you're in",
+        "hidden": false,
+        "nsfw": false,
+        "tags": [
+            "fun"
+        ],
+        "params": []
+    },
+    "kiss": {
+        "permissions": [],
+        "description": "gives the person of your choosing a nice kiss",
+        "hidden": false,
+        "nsfw": false,
+        "tags": [
+            "fun"
+        ],
+        "params": [
+            {
+                "type": "mention",
+                "required": true,
+                "name": "user"
+            }
+        ]
+    },
+    "leave": {
+        "permissions": [],
+        "description": "make me leave the current channel",
+        "hidden": false,
+        "nsfw": false,
+        "tags": [
+            "fun"
+        ],
+        "params": []
+    },
+    "magicball": {
+        "permissions": [],
+        "description": "it's a magic ball!",
+        "hidden": false,
+        "nsfw": false,
+        "tags": [
+            "fun"
+        ],
+        "params": [
+            {
+                "type": "string",
+                "required": true,
+                "name": "true / false question"
+            }
+        ]
+    },
+    "neko": {
+        "permissions": [],
+        "description": "gets a cute neko~! (*^ω^*)",
+        "hidden": false,
+        "nsfw": false,
+        "tags": [
+            "fun"
+        ],
+        "params": []
+    },
+    "pat": {
+        "permissions": [],
+        "description": "gives the person of your choosing a nice pat on the head",
+        "hidden": false,
+        "nsfw": false,
+        "tags": [
+            "fun"
+        ],
+        "params": [
+            {
+                "type": "mention",
+                "required": true,
+                "name": "user"
+            }
+        ]
+    },
+    "play": {
+        "permissions": [],
+        "description": "play a song",
+        "hidden": false,
+        "nsfw": false,
+        "tags": [
+            "fun"
+        ],
+        "params": [
+            {
+                "type": "string",
+                "required": true,
+                "name": "youtube url / search term"
+            }
+        ]
+    },
+    "psychopass": {
+        "permissions": [],
+        "description": "retrieves your crime coefficient!",
+        "hidden": true,
+        "nsfw": false,
+        "tags": [
+            "fun"
+        ],
+        "params": [
+            {
+                "type": "mention",
+                "required": false,
+                "name": "user"
+            }
+        ]
+    },
+    "queue": {
+        "permissions": [],
+        "description": "get the queue of selected songs",
+        "hidden": false,
+        "nsfw": false,
+        "tags": [
+            "fun"
+        ],
+        "params": []
+    },
+    "skip": {
+        "permissions": [],
+        "description": "skips the song that's currently playing",
+        "hidden": false,
+        "nsfw": false,
+        "tags": [
+            "fun"
+        ],
+        "params": []
+    },
+    "stab": {
+        "permissions": [],
+        "description": "stab whoever you mention",
+        "hidden": true,
+        "nsfw": false,
+        "params": [
+            {
+                "type": "mention",
+                "required": true
+            }
+        ]
+    },
+    "get": {
+        "permissions": [],
+        "description": "gets a value from whatever you specify",
+        "hidden": false,
+        "nsfw": false,
+        "tags": [
+            "management",
+            "utility"
+        ],
+        "params": [
+            {
+                "type": "string",
+                "required": true,
+                "name": "path"
+            },
+            {
+                "type": "string",
+                "required": false,
+                "name": "user | role | channel"
+            }
+        ]
+    },
+    "help": {
+        "permissions": [],
+        "hidden": false,
+        "nsfw": false,
+        "params": [
+            {
+                "type": "string",
+                "required": false,
+                "name": "search term | page number"
+            },
+            {
+                "type": "string",
+                "required": false,
+                "name": "page number (only if applicable)"
+            }
+        ]
+    },
+    "ping": {
+        "permissions": [],
+        "description": "gets the ping of the bot in milliseconds",
+        "hidden": false,
+        "nsfw": false,
+        "tags": [
+            "management",
+            "utility"
+        ],
+        "params": []
+    },
+    "rank": {
+        "permissions": [],
+        "description": "gets your ranking",
+        "hidden": false,
+        "nsfw": false,
+        "tags": [
+            "utility",
+            "fun"
+        ],
+        "params": [
+            {
+                "type": "mention",
+                "required": false,
+                "name": "user"
+            }
+        ]
+    },
+    "serverinfo": {
+        "permissions": [],
+        "description": "gets some nice server info",
+        "hidden": false,
+        "nsfw": false,
+        "tags": [
+            "utility",
+            "fun"
+        ],
+        "params": []
+    },
+    "set": {
+        "permissions": [
+            "DISCORD.ADMINISTRATOR"
+        ],
+        "description": "sets a local value to whatever you specify",
+        "hidden": false,
+        "nsfw": false,
+        "tags": [
+            "management",
+            "admin"
+        ],
+        "params": [
+            {
+                "type": "string",
+                "required": true,
+                "name": "key"
+            },
+            {
+                "type": "string",
+                "required": true,
+                "name": "value"
+            }
+        ]
+    },
+    "userinfo": {
+        "permissions": [],
+        "description": "Gets some nice user info",
+        "hidden": false,
+        "nsfw": false,
+        "tags": [
+            "utility",
+            "fun"
+        ],
+        "params": [
+            {
+                "type": "mention",
+                "required": false,
+                "name": "user"
+            }
+        ]
+    },
+    "eval": {
+        "permissions": [
+            "BOT.MASTER"
+        ],
+        "description": "evaluates the given statement and returns the output",
+        "hidden": false,
+        "nsfw": false,
+        "tags": [
+            "management",
+            "utility"
+        ],
+        "params": [
+            {
+                "type": "string",
+                "required": true
+            }
+        ]
+    },
+    "experience": {
+        "permissions": [
+            "BOT.MASTER"
+        ],
+        "description": "makes the bot say whatever you specify",
+        "hidden": false,
+        "nsfw": false,
+        "params": [
+            {
+                "type": "string",
+                "required": true
+            },
+            {
+                "type": "number",
+                "required": false
+            },
+            {
+                "type": "mention",
+                "required": false
+            }
+        ]
+    },
+    "fetch": {
+        "permissions": [
+            "BOT.MASTER"
+        ],
+        "description": "fetches the current directory tree or file associated with the specified path",
+        "hidden": false,
+        "nsfw": false,
+        "tags": [
+            "management",
+            "utility"
+        ],
+        "params": [
+            {
+                "type": "string",
+                "required": true,
+                "name": "path"
+            }
+        ]
+    },
+    "sudo": {
+        "name": "sudo",
+        "permissions": [
+            "BOT.MASTER"
+        ],
+        "description": "runs a command as if you were whoever you specify",
+        "hidden": false,
+        "nsfw": false,
+        "params": [
+            {
+                "type": "mention",
+                "required": true,
+                "name": "possession"
+            },
+            {
+                "type": "string",
+                "required": true,
+                "name": "command"
+            }
+        ]
+    }
+}

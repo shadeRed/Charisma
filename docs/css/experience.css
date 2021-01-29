@@ -1,0 +1,44 @@
+#experience div#chartContainer {
+    display: block;
+    position: relative;
+    width: 100%;
+}
+
+#experience div#controlsBar {
+    display: block;
+    background-color: var(--accent-dark);
+    padding: 10px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+}
+
+#experience div#controlsBar label {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+#experience div#controlsBar input {
+    background-color: var(--accent-dark);
+    border: none;
+    border-bottom: solid 2px var(--accent);
+    padding: 5px;
+    width: 100px;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+#experience div#controlsBar button {
+    background-color: var(--accent);
+    border: none;
+    border-radius: 20px;
+    padding: 5px 10px 5px 10px;
+    color: rgba(255, 255, 255, 0.8);
+    transition: all 0.2s;
+}
+
+#experience div#controlsBar button:hover {
+    filter: brightness(95%);
+    cursor: pointer;
+}
+
+.modebar {
+    display: none;
+}

@@ -1,0 +1,27 @@
+p {
+    padding: 0px;
+    margin: 0px;
+}
+
+:root {
+    --accent: #6A6D98;
+    --accent-dark: #3C3F62;
+}
+
+#commands, #experience, #faq, #getStarted, #about {
+    display: none;
+    margin-bottom: 20px;
+}
+
+#commands.selected, #experience.selected, #faq.selected, #getStarted.selected, #about.selected {
+    display: block;
+}
+
+.container {
+    margin-top: 100px;
+}
+
+code {
+    color: var(--accent);
+    filter: brightness(110%);
+}

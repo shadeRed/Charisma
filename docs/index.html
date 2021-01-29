@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="icon" href="avatar.png">
+
+    <link rel="stylesheet" href="css/libraries/bootstrap.css">
+    <link rel="stylesheet" href="css/libraries/fontawesome.css">
+    <link rel="stylesheet" href="css/libraries/emoji.css">
+
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/boostrapOverrides.css">
+    <link rel="stylesheet" href="css/commands.css">
+    <link rel="stylesheet" href="css/experience.css">
+    <title>Charisma</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-sm navbar-dark fixed-top">
+        <span class="navbar-brand"><img src="avatar.png" width="40" height="40"></span>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item"><a class="nav-link" href="#">invite</a></li>
+                <li class="nav-item dropdown navButton commands experience faq getStarted">
+                    <a class="nav-link dropdown-toggle" href="#" id="usageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">usage</a>
+                    <div class="dropdown-menu" aria-labelledby="usageDropdown">
+                        <a class="dropdown-item commands" href="?page=commands">commands</a>
+                        <a class="dropdown-item experience" href="?page=experience">experience</a>
+                        <a class="dropdown-item faq" href="?page=faq">frequently asked questions</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item getStarted" href="?page=getStarted">get started</a>
+                    </div>
+                </li> 
+            </ul>
+
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="supportDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">contribute</a>
+                    <div class="dropdown-menu" aria-labelledby="supportDropdown">
+                        <a class="dropdown-item" href="https://github.com/shadeRed/charisma" target="_blank">GitHub</a>
+                        <a class="dropdown-item" href="https://www.patreon.com/_red" target="_blank">Patreon</a>
+                    </div>
+                </li>
+                <li class="nav-item navButton about"><a class="nav-link" href="?page=about">about</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div id="commands">
+            <h1>commands</h1>
+            <div id="queryTags" class="d-flex justify-content-start"></div>
+            <div id="commandQuery"></div>
+        </div>
+
+        <div id="experience">
+            <div id="controlsBar">
+                <label>exp curve: </label>
+                <input type="number" autocomplete="off" step="0.1" min="1" max="5" placeholder="2.2" id="customExpCurve">
+                <button onclick="regenerateExpChart()">regenerate</button>
+            </div>
+            <div id="chartContainer">
+                <canvas id="expChart"></canvas>
+            </div>
+        </div>
+
+        <div id="faq">
+            <h1>frequently asked questions</h1>
+        </div>
+        <div id="getStarted"></div>
+        <div id="about"></div>
+    </div>
+</body>
+
+<script src="js/jquery.js"></script>
+<script src="js/popper.js"></script>
+<script src="js/bootstrap.js"></script>
+<script src="js/chart.js"></script>
+<script src="js/marked.js"></script>
+
+<script src="js/initializers/commandQuery.js"></script>
+<script src="js/initializers/expChart.js"></script>
+<script src="js/initializers/about.js"></script>
+<script src="js/initializers/getStarted.js"></script>
+
+<script src="js/main.js"></script>
+</html>
