@@ -1,6 +1,5 @@
 let Discord = require('discord.js');
 let progressBar = require('progress-string');
-let CommandContext = require('./../../classes/CommandContext.js');
 
 function overHour(ms) { return ms >= 3600000 }
 function convert(ms, isHours) {
@@ -28,10 +27,6 @@ module.exports = {
         params: []
     },
 
-    /**
-     * 
-     * @param {CommandContext} context 
-     */
     command: async function(context) {
         let embed = new Discord.MessageEmbed();
         embed.setColor(context.local.guild.colors.accent);
@@ -62,11 +57,6 @@ module.exports = {
                 let label = 'progress';
                 if (context.music.instances.get(context.guild.id).connection.dispatcher.paused) { label = `${label} [paused]` }
                 embed.addField(label, `${progress}`);
-                /**var length = 7;
-var trimmedString = string.substring(0, length); */
-/**string.length > length ? 
-                    string.substring(0, length - 3) + "..." : 
-                    string; */
                 
                 embed.addField('description', description.length > 1000 ? description.substring(0, 1000 - 3) + '...' : description);
 

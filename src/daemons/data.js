@@ -4,7 +4,6 @@ let transform = require('lodash.transform')
 let isEqual = require('lodash.isequal')
 let isArray = require('lodash.isarray')
 let isObject = require('lodash.isobject');
-const BotContext = require('../classes/BotContext');
 
 var config;
 var connection;
@@ -122,10 +121,6 @@ function clone(obj) {
     return diffs;
 }*/
 
-/**
- * 
- * @param {BotContext} imports 
- */
 module.exports = async function(imports) {
     delete imports.config.defaults.guild.prefix;
     delete imports.config.defaults.guild.colors.accent;

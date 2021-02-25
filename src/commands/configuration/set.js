@@ -1,5 +1,3 @@
-let CommandContext = require('./../../classes/CommandContext.js');
-
 Object.byString = function(o, s) {
     s = s.replace(/\[(\w+)\]/g, '.$1'); // convert indexes to properties
     s = s.replace(/^\./, '');           // strip a leading dot
@@ -50,11 +48,6 @@ module.exports = {
     },
 
     command: [
-        /**
-         * 
-         * @param {CommandContext} imports 
-         * @param {any[]} parameters 
-         */
         async function(imports, parameters) {
             var embed = new Discord.MessageEmbed();
             embed.setColor(imports.local.guild.colors.accent);

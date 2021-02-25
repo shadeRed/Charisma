@@ -1,10 +1,5 @@
 let ytdl = require('ytdl-core');
-let BotContext = require('./../classes/BotContext.js');
 
-/**
- * 
- * @param {BotContext} context 
- */
 module.exports = function(context) {
     context.music = {
         errors: [

@@ -4,3 +4,4 @@ package-lock.json
 src/config/*.json
 !src/config/*.example.json
 src/token.json
+rethink/

@@ -1,19 +1,8 @@
 var Discord = require('discord.js');
-let CommandContext = require('./../classes/CommandContext.js');
 
 module.exports = {
-    /**
-     * 
-     * @param {string} command 
-     * @param {CommandContext} passthrough 
-     */
     get: function(command, passthrough) { return passthrough.commands.configs.get(command) },
 
-    /**
-     * 
-     * @param {string} permission 
-     * @param {CommandContext} passthrough 
-     */
     hasPermission: async function(permission, passthrough) {
         var toReturn;
         async function recur(obj, perm) {
@@ -33,11 +22,6 @@ module.exports = {
         return toReturn;
     },
 
-    /**
-     * 
-     * @param {string} command 
-     * @param {CommandContext} passthrough 
-     */
     status: async function(command, passthrough) {
         let config = passthrough.commands.configs.get(command.name);
         if (config) {
@@ -108,12 +92,6 @@ module.exports = {
         }
     },
 
-    /**
-     * 
-     * @param {any[]} inputs 
-     * @param {any[]} params 
-     * @param {CommandContext} passthrough 
-     */
     evaluateParams: async function(inputs, params, passthrough) {
         let toReturn = [];
         for (let i = 0; i < inputs.length; i++) {
@@ -132,12 +110,6 @@ module.exports = {
         return toReturn;
     },
 
-    /**
-     * 
-     * @param {string} name 
-     * @param {any[]} parameters 
-     * @param {CommandContext} passthrough 
-     */
     check: async function(name, parameters, passthrough) {
         let config = passthrough.commands.configs.get(name);
 
@@ -165,13 +137,7 @@ module.exports = {
 
         return -1;
     },
-
-    /**
-     * 
-     * @param {string} prefix 
-     * @param {string} command 
-     * @param {CommandContext} passthrough 
-     */
+    
     syntax: function(prefix, command, passthrough) {
         let config = passthrough.commands.configs.get(command);
         if (config) {

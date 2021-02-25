@@ -3,8 +3,6 @@ let ytdl = require('ytdl-core');
 let yts = require('yt-search');
 let moment = require('moment');
 
-let CommandContext = require('./../../classes/CommandContext.js');
-
 module.exports = {
     config: {
         permissions: [],
@@ -75,12 +73,6 @@ module.exports = {
         },
 
         // <YouTube Video URL>
-
-        /**
-         * 
-         * @param {CommandContext} context 
-         * @param {any[]} parameters 
-         */
         async function(context, parameters) {
             let embed = new Discord.MessageEmbed();
             embed.setColor(context.local.guild.colors.accent);

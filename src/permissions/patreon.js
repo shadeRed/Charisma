@@ -1,16 +1,9 @@
-let CommandContext = require('./../classes/CommandContext.js');
-
 let serverID = '561220044147654681';
 let roles = {
     BUBBLEGUM: '591305415912980484'
 }
 
 module.exports = {
-    /**
-     * 
-     * @param {string} permission 
-     * @param {CommandContext} context 
-     */
     PATREON: async function(permission, context) {
 
         let toReturn = { userPerms: true, botPerms: true, master: false }

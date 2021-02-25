@@ -1,5 +1,3 @@
-let BotContext = require('./../classes/BotContext.js');
-
 let request = require('request');
 let extensions = [ 'png', 'jpg', 'jpeg', 'gif' ];
 
@@ -12,10 +10,6 @@ async function getBuffer(url) {
     });
 }
 
-/**
- * 
- * @param {BotContext} context 
- */
 module.exports = function(context) {
     context.core.image = {
         gmToBuffer: function(data) {

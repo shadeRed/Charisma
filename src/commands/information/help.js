@@ -1,5 +1,4 @@
 var Discord = require('discord.js');
-let CommandContext = require('./../../classes/CommandContext.js');
 
 async function parse(imports, name) {
     var status = await imports.core.command.status({ name: name }, imports);
@@ -40,11 +39,6 @@ module.exports = {
     command: [
         // help [page]
 
-        /**
-         * 
-         * @param {CommandContext} imports 
-         * @param {any[]} parameters 
-         */
         async function(imports, parameters) {
             let command = imports.core.command;
             let embed = new Discord.MessageEmbed();
@@ -84,11 +78,6 @@ module.exports = {
 
         // help <command>
 
-        /**
-         * 
-         * @param {CommandContext} imports 
-         * @param {any[]} parameters 
-         */
         async function(imports, parameters) {
             let command = imports.core.command;
             let embed = new Discord.MessageEmbed();
@@ -121,11 +110,6 @@ module.exports = {
 
         // help <search terms> [page]
 
-        /**
-         * 
-         * @param {CommandContext} imports 
-         * @param {any[]} parameters 
-         */
         async function(imports, parameters) {
             let command = imports.core.command;
             let embed = new Discord.MessageEmbed();

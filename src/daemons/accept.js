@@ -1,6 +1,4 @@
 let Discord = require('discord.js');
-let BotContext = require('./../classes/BotContext.js');
-let CommandContext = require('./../classes/CommandContext.js');
 
 function clearEmpties(o) {
     for (var k in o) {
@@ -21,13 +19,6 @@ module.exports = async function(imports) {
     // 0: request expired
     // 1: request accepted
 
-    /**
-     * 
-     * @param {Discord.Guild} guild 
-     * @param {Discord.TextChannel} channel 
-     * @param {Discord.User} user 
-     * @param {string} password 
-     */
     imports.awaitRequest = function(guild, channel, user, password) {
         return new Promise(function(resolve, reject) {
 
@@ -57,13 +48,6 @@ module.exports = async function(imports) {
         });
     }
 
-    /**
-     * 
-     * @param {CommandContext} context 
-     * @param {Discord.MessageEmbed} embed 
-     * @param {function} callback 
-     * @param {boolean} hasCode 
-     */
     imports.request = function(context, embed, callback, hasCode) {
         let guild = context.guild.id;
         let channel = context.channel.id;

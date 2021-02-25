@@ -1,5 +1,4 @@
 var Discord = require('discord.js');
-let CommandContext = require('./../../classes/CommandContext.js');
 
 function shuffle(array) {
     for (var i = array.length - 1; i > 0; i--) {
@@ -20,10 +19,6 @@ module.exports = {
         params: []
     },
 
-    /**
-     * 
-     * @param {CommandContext} context 
-     */
     command: async function(context) {
         let embed = new Discord.MessageEmbed();
         embed.setColor(context.local.guild.colors.accent);

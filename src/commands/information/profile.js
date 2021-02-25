@@ -1,5 +1,4 @@
 let Discord = require('discord.js');
-let CommandContext = require('./../../classes/CommandContext.js');
 let gm = require('gm');
 
 
@@ -13,11 +12,6 @@ module.exports = {
         params: [ { required: false, type: 'mention', name: 'user' } ]
     },
 
-    /**
-     * 
-     * @param {CommandContext} context 
-     * @param {any[]} parameters 
-     */
     command: async function(context, parameters) {
         var embed = new Discord.MessageEmbed();
         embed.setColor(context.local.guild.colors.accent);

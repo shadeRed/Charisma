@@ -2,7 +2,6 @@ var Discord = require('discord.js');
 var moment = require('moment');
 var momentDurationFormatSetup = require("moment-duration-format");
 momentDurationFormatSetup(moment);
-let CommandContext = require('./classes/CommandContext.js');
 
 function sleep(ms) {
     return new Promise(function(resolve, reject) { setTimeout(resolve, ms) });
@@ -40,11 +39,6 @@ function percentageOf(num, percentage) {
     return (percentage / 100) * num;
 }
 
-/**
- * 
- * @param {CommandContext} imports 
- * @param {Discord.Message} message 
- */
 module.exports = async function(imports, message) {
     if (message.author.bot) { return }
     var guild;
@@ -230,6 +224,7 @@ module.exports = async function(imports, message) {
                         var duration = moment.duration(difference);
                         var parsed;
                         if (duration.get('minutes') == 0) { parsed = duration.format('00:ss') }
+                        else if (duration.get('hours') != 0) { parsed = duration.format('hh:mm:ss') }
                         else { parsed = duration.format('mm:ss') }
                         embed.setDescription(`you can use that command again in **${parsed}**`);
                     }
@@ -246,7 +241,13 @@ module.exports = async function(imports, message) {
             if (embed.description == 'command not found') { if (local.guild.options.errors.unknownCommand) { message.channel.send(embed) } }
             else {
                 let sent = await message.channel.send(embed);
-                if (embed.description.startsWith(`you can use that command again in`) && local.guild.options.deleteCooldownedAttempts) {
+                if (embed.description.startsWith(`you can use that command again in`) && local.guild.options.deleteCooldownedAttempts && passthrough.guild.me.hasPermission(Discord.Permissions.FLAGS.MANAGE_MESSAGES)) {
+                    /**if (Discord.Permissions.FLAGS[permission]) {
+            if (!passthrough.member.hasPermission(Discord.Permissions.FLAGS[permission])) { toReturn.userPerms = false }
+            if (!passthrough.guild.me.hasPermission(Discord.Permissions.FLAGS[permission])) { toReturn.botPerms = false }
+        }
+
+        return toReturn; */
                     sent.delete({ timeout: 5000 });
                     message.delete();
                 }
