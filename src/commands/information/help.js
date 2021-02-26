@@ -27,7 +27,7 @@ module.exports = {
 
             [
                 { type: 'string', required: true, name: 'search terms' },
-                { type: 'string', required: false, name: 'page' }
+                { type: 'number', required: false, name: 'page' }
             ],
 
             [
@@ -38,7 +38,6 @@ module.exports = {
 
     command: [
         // help [page]
-
         async function(imports, parameters) {
             let command = imports.core.command;
             let embed = new Discord.MessageEmbed();
@@ -76,40 +75,7 @@ module.exports = {
             imports.channel.send(embed);
         },
 
-        // help <command>
-
-        async function(imports, parameters) {
-            let command = imports.core.command;
-            let embed = new Discord.MessageEmbed();
-            embed.setColor(imports.local.guild.colors.accent);
-    
-            let name = parameters[0];
-            if (imports.commands.aliases.get(name)) { name = imports.commands.aliases.get(name) }
-            let config = imports.commands.configs.get(name);
-            if (config) {
-                if (!(await parse(imports, name))) { embed.setDescription(`you don't have permission to view that command`) }
-                //if (config.permissions.includes('BOT.MASTER') && imports.config.master != imports.user.id) { embed.setDescription(`you don't have permission to view that command`) }
-                else {
-                    embed.addField('description', config.description, true);
-                    embed.addField('usage', `\`${command.syntax(imports.local.guild.prefix, name, imports)}\``, true);
-                    if (config.tags) { embed.addField('tags', config.tags.join(', '), true) }
-                    if (config.permissions.length > 0) {
-                        let arr = [];
-                        for (let p = 0; p < config.permissions.length; p++) { arr.push(`\`${config.permissions[p]}\``) }
-                        embed.addField('permissions', arr.join(', '));
-                    }
-
-                    embed.addField('nsfw', config.nsfw, true);
-                }
-            }
-
-            else { embed.setDescription(`that command doesn't exist`) }
-            
-            imports.channel.send(embed);
-        },
-
         // help <search terms> [page]
-
         async function(imports, parameters) {
             let command = imports.core.command;
             let embed = new Discord.MessageEmbed();
@@ -143,6 +109,37 @@ module.exports = {
                 embed.setFooter(`page ${page + 1}/${max + 1}`);
             }
 
+            imports.channel.send(embed);
+        },
+
+        // help <command>
+        async function(imports, parameters) {
+            let command = imports.core.command;
+            let embed = new Discord.MessageEmbed();
+            embed.setColor(imports.local.guild.colors.accent);
+    
+            let name = parameters[0];
+            if (imports.commands.aliases.get(name)) { name = imports.commands.aliases.get(name) }
+            let config = imports.commands.configs.get(name);
+            if (config) {
+                if (!(await parse(imports, name))) { embed.setDescription(`you don't have permission to view that command`) }
+                //if (config.permissions.includes('BOT.MASTER') && imports.config.master != imports.user.id) { embed.setDescription(`you don't have permission to view that command`) }
+                else {
+                    embed.addField('description', config.description, true);
+                    embed.addField('usage', `\`${command.syntax(imports.local.guild.prefix, name, imports)}\``, true);
+                    if (config.tags) { embed.addField('tags', config.tags.join(', '), true) }
+                    if (config.permissions.length > 0) {
+                        let arr = [];
+                        for (let p = 0; p < config.permissions.length; p++) { arr.push(`\`${config.permissions[p]}\``) }
+                        embed.addField('permissions', arr.join(', '));
+                    }
+
+                    embed.addField('nsfw', config.nsfw, true);
+                }
+            }
+
+            else { embed.setDescription(`that command doesn't exist`) }
+            
             imports.channel.send(embed);
         }
     ]
