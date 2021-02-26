@@ -31,12 +31,11 @@ module.exports = {
     },
 
     command: [
-        async function(imports, parameters) {
-            //console.log(imports.local.guild.channels);
+        async function(imports) {
             let embed = new Discord.MessageEmbed();
             embed.setColor(imports.local.guild.colors.accent);
             let gets = imports.gets.data;
-            for (let g in gets) { embed.addField(g, `\`${size(gets)} items\``, true) }
+            for (let g in gets) { embed.addField(g, `**${size(gets[g])} items**`, true) }
             imports.channel.send(embed);
         },
         
