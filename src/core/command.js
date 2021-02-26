@@ -104,7 +104,9 @@ module.exports = {
                 else { toReturn.push(passthrough.commands.parameters.get(params[i].type)(inputs[i], passthrough).value) }
             }
 
-            else { toReturn[toReturn.length - 1] = `${toReturn[toReturn.length - 1]} ${inputs[i]}` }
+            else {
+                if (params[params.length - 1].type == 'string') { toReturn[toReturn.length - 1] = `${toReturn[toReturn.length - 1]} ${inputs[i]}` }
+            }
         }
 
         return toReturn;
