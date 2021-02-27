@@ -21,12 +21,13 @@ module.exports = {
         nsfw: false,
         aliases: ['h'],
         params: [
+
             [
+                { type: 'string', required: true, name: 'search terms' },
                 { type: 'number', required: false, name: 'page' }
             ],
 
             [
-                { type: 'string', required: true, name: 'search terms' },
                 { type: 'number', required: false, name: 'page' }
             ],
 
@@ -37,6 +38,43 @@ module.exports = {
     },
 
     command: [
+        // help <search terms> [page]
+        async function(imports, parameters) {
+            let command = imports.core.command;
+            let embed = new Discord.MessageEmbed();
+            embed.setColor(imports.local.guild.colors.accent);
+    
+            let page = parameters[1] ? parameters[1] - 1 : 0;
+    
+            let configs = imports.commands.configs;
+            let list = {};
+
+            let obj = Array.from(configs).reduce(function(obj, [key, value]) { obj[key] = value; return obj; }, {});
+            for (let o in obj) { if (await parse(imports, o) && obj[o].tags && obj[o].tags.includes(parameters[0])) { list[o] = obj[o] } }
+
+            let arr = [];
+
+            for (l in list) { arr.push([l, list[l]]) }
+            let max = Math.ceil(arr.length / 10) - 1;
+            if (page > max) {
+                if (arr.length == 0) { embed.setDescription('no commands were found') }
+                else { embed.setDescription('please specify a smaller page number') }
+            }
+
+            else {
+                for (let i = 0; i < 10; i++) {
+                    if (arr[(page * 10) + i]) {
+                        let syntax = command.syntax(imports.local.guild.prefix, arr[(page * 10) + i][0], imports);
+                        embed.addField(arr[(page * 10) + i][0], `\`${syntax}\``);
+                    }
+                }
+
+                embed.setFooter(`page ${page + 1}/${max + 1}`);
+            }
+
+            imports.channel.send(embed);
+        },
+
         // help [page]
         async function(imports, parameters) {
             let command = imports.core.command;
@@ -65,43 +103,6 @@ module.exports = {
                 for (var i = 0; i < 10; i++) {
                     if (arr[(page * 10) + i]) {
                         var syntax = command.syntax(imports.local.guild.prefix, arr[(page * 10) + i][0], imports);
-                        embed.addField(arr[(page * 10) + i][0], `\`${syntax}\``);
-                    }
-                }
-
-                embed.setFooter(`page ${page + 1}/${max + 1}`);
-            }
-
-            imports.channel.send(embed);
-        },
-
-        // help <search terms> [page]
-        async function(imports, parameters) {
-            let command = imports.core.command;
-            let embed = new Discord.MessageEmbed();
-            embed.setColor(imports.local.guild.colors.accent);
-    
-            let page = parameters[1] ? parameters[1] - 1 : 0;
-    
-            let configs = imports.commands.configs;
-            let list = {};
-
-            let obj = Array.from(configs).reduce(function(obj, [key, value]) { obj[key] = value; return obj; }, {});
-            for (let o in obj) { if (await parse(imports, o) && obj[o].tags && obj[o].tags.includes(parameters[0])) { list[o] = obj[o] } }
-
-            let arr = [];
-
-            for (l in list) { arr.push([l, list[l]]) }
-            let max = Math.ceil(arr.length / 10) - 1;
-            if (page > max) {
-                if (arr.length == 0) { embed.setDescription('no commands were found') }
-                else { embed.setDescription('please specify a smaller page number') }
-            }
-
-            else {
-                for (let i = 0; i < 10; i++) {
-                    if (arr[(page * 10) + i]) {
-                        let syntax = command.syntax(imports.local.guild.prefix, arr[(page * 10) + i][0], imports);
                         embed.addField(arr[(page * 10) + i][0], `\`${syntax}\``);
                     }
                 }
