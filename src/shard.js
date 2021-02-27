@@ -4,27 +4,15 @@ let fs = require('fs');
 let options = require('./config/options.json');
 let token = require('./token.json').token;
 let colors = require('./core/colors.js');
-let utils = require('./core/utils.js');
+let util = require('util');
 let excluded = require('./excluded.json');
 
-function getOutput(content, marker, highlighted) {
-    if (!marker) { marker = '' }
-    else { marker = `${marker} ` }
-    
-    let lines = [];
-    if (typeof content === 'object' && typeof content != null)  {
-        let objectString = utils.inspect(content);
-        let regexp = /^\d\d:\d\d$/;
-        lines = objectString.split('\n');
-    }
-    
-    else { content = `${content}`; lines = content.split('\n') }
-    lines.filter(line => line != '');
-    if (highlighted) { lines = colors.highlight(lines.join('\n')).split('\n') }
-    for (let l = 0; l < lines.length; l++) { lines[l] = `${marker}${lines[l]}` }
-    return lines.join('\n');
+function trace() {
+    let error = new Error();
+    let path = error.stack.split('\n')[3].match(/\(([^()]+)\)/g)[0].slice(1, -1);
+    let location = path.split('\\')[path.split('\\').length - 1];
+    return location;
 }
-
 
 // overwrites console object with new methods
 // (not really sure if this is good practice but I did it anyway)
@@ -32,96 +20,46 @@ function getOutput(content, marker, highlighted) {
 
 //process.stdout.on('data', function(data) { process.send({ type: 'log', content: data }) });
 
-global.console = {
-    log: function(toLog) {
-        let error = new Error();
-        let marker = colors.fg.wrap('[?]', colors.colors.log);
-        let from = error.stack.split('\n')[2].split('\\')[error.stack.split('\n')[2].split('\\').length - 1].slice(0, -1);
-        if (options.logs.showOriginFile) { marker = colors.fg.wrap(`[${from}]`, colors.colors.log) }
-        let out = getOutput(toLog, marker);
-        process.stdout.write(`${out}\n`);
-    },
 
-    info: function(toLog) {
-        let marker = colors.fg.wrap('[~]', colors.colors.ready);
-        let out = getOutput(toLog, marker);
-        process.stdout.write(`${out}\n`);
-    },
+global.console.log = function(out) {
+    let marker = colors.fg.wrap('[?]', colors.colors.log);
+    if (options.logs.showOriginFile) { marker = colors.fg.wrap(`[${trace()}]`, colors.colors.log) }
 
-    infolight: function(toLog) {
-        if (options.logs.infoWeight > 1) {
-            let marker = colors.fg.wrap('[~]', colors.colors.ready);
-            let out = getOutput(toLog, marker);
-            process.stdout.write(`${out}\n`);
-        }
-    },
+    let str;
 
-    infoheavy: function(toLog) {
-        if (options.logs.infoWeight > 2) {
-            let marker = colors.fg.wrap('[~]', colors.colors.ready);
-            let out = getOutput(toLog, marker);
-            process.stdout.write(`${out}\n`);
-        }
-    },
+    if (typeof out == 'string') { str = out }
+    else { str = util.inspect(out, false, 10, true) }
 
-    ready: function(toLog) {
-        let marker = colors.fg.wrap('[+]', colors.colors.success);
-        let out = getOutput(toLog, marker);
-        process.stdout.write(`${out}\n`);
-    },
-
-    warn: function(toLog) {
-        let marker = colors.fg.wrap('[-]', colors.colors.warning);
-        let out = getOutput(toLog, marker, true);
-        process.stdout.write(`${out}\n`);
-    },
-
-    warnlight: function(toLog) {
-        if (options.logs.warnWeight > 1) {
-            let marker = colors.fg.wrap('[-]', colors.colors.warning);
-            let out = getOutput(toLog, marker, true);
-            process.stdout.write(`${out}\n`);
-        }
-    },
-
-    warnheavy: function(toLog) {
-        if (options.logs.warnWeight > 2) {
-            let marker = colors.fg.wrap('[-]', colors.colors.warning);
-            let out = getOutput(toLog, marker, true);
-            process.stdout.write(`${out}\n`);
-        }
-    },
-
-    error: function(error) {
-        let marker = colors.fg.wrap('[!]', colors.colors.error);
-        let content;
-        if (error instanceof Error) { content = error.stack }
-        else { content = error }
-        process.stdout.write(`${getOutput(content, marker)}\n`);
-    },
-
-    errorlight: function(error) {
-        if (options.logs.errorWeight > 1) {
-            let marker = colors.fg.wrap('[!]', colors.colors.error);
-            let content;
-            if (error instanceof Error) { content = error.stack }
-            else { content = error }
-            process.stdout.write(`${getOutput(content, marker)}\n`);
-        }
-    },
-
-    errorheavy: function(error) {
-        if (options.logs.errorWeight > 2) {
-            let marker = colors.fg.wrap('[!]', colors.colors.error);
-            let content;
-            if (error instanceof Error) { content = error.stack }
-            else { content = error }
-            process.stdout.write(`${getOutput(content, marker)}\n`);
-        }
-    }
+    let split = str.split('\n');
+    for (let s = 0; s < split.length; s++) { split[s] = `${marker} ${split[s]}` }
+    process.stdout.write(`${split.join('\n')}\n`);
 }
 
-let client = new Discord.Client();
+global.console.info = function(out) { process.stdout.write(`${colors.fg.wrap('[~]', colors.colors.info)} ${out}\n`) }
+global.console.ready = function(out) { process.stdout.write(`${colors.fg.wrap('[+]', colors.colors.ready)} ${out}\n`) }
+global.console.warn = function(out) { process.stdout.write(`${colors.fg.wrap('[-]', colors.colors.warning)} ${out}\n`) }
+
+global.console.error = function(out) {
+    let marker = colors.fg.wrap('[!]', colors.colors.error);
+    if (out instanceof Error) {
+        let lines = out.stack.split('\n');
+        for (let l = 0; l < lines.length; l++) { lines[l] = `${marker} ${lines[l]}` }
+        process.stdout.write(`${lines.join('\n')}\n`);
+    }
+
+    else { process.stdout.write(`${marker} ${out}\n`) }
+}
+
+//let priviledged_intents = new Discord.Intents(Discord.Intents.PRIVILEGED);
+let intents = new Discord.Intents(Discord.Intents.ALL);
+
+intents.add('GUILD_MESSAGES');
+intents.add('GUILD_MESSAGE_REACTIONS');
+intents.add('GUILDS');
+
+intents.add('GUILD_MEMBERS');
+
+let client = new Discord.Client({ ws: { intents: new Discord.Intents(Discord.Intents.ALL) } });
 
 let imports = {
     client: client,
