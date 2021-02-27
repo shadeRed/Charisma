@@ -7,6 +7,15 @@ function sleep(ms) {
     return new Promise(function(resolve, reject) { setTimeout(resolve, ms) });
 }
 
+function isAlphaNumeric(str) {
+    for (let i = 0; i < str.length; i++) {
+        let code = str.charCodeAt(i);
+        if (!(code > 47 && code < 58) && !(code > 64 && code < 91) && !(code > 96 && code < 123)) { return false }
+    }
+
+    return true;
+  }
+
 function clone(obj) {
     var copy;
     if (null == obj || "object" != typeof obj) return obj;
@@ -109,6 +118,8 @@ module.exports = async function(imports, message) {
         var content = message.content;
 
         var name = content.slice(local.guild.prefix.length).split(' ')[0].toLowerCase();
+        if (passthrough.local.guild.options.preventNonAlphanumErrors && !isAlphaNumeric(name)) { return }
+
         var full = name + content.slice(local.guild.prefix.length + name.length);
 
         if (passthrough.commands.aliases.get(name)) { name = passthrough.commands.aliases.get(name) }
