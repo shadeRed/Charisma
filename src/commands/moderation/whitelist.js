@@ -46,7 +46,7 @@ module.exports = {
                     members.push(member.user.tag);
                 }
 
-                embed.setTitle(`${imports.local.guild.config.prefix}${parameters[1]} whitelist`);
+                embed.setTitle(`${imports.local.guild.prefix}${parameters[1]} whitelist`);
                 embed.setDescription(members.join(', '));
             }
 
@@ -101,7 +101,7 @@ module.exports = {
             if (imports.local.guild.whitelist[parameters[1]]) {
                 let embed1 = new Discord.MessageEmbed();
                 embed1.setColor(imports.local.guild.colors.accent);
-                embed1.setDescription(`confirm by typing \`${imports.local.guild.config.prefix}accept\``);
+                embed1.setDescription(`confirm by typing \`${imports.local.guild.prefix}accept\``);
                 let message = await imports.channel.send(embed1);
                 let requestResponse = await imports.awaitRequest(imports.guild.id, imports.channel.id, imports.user.id);
                 

@@ -77,7 +77,7 @@ module.exports = {
                 let index = imports.local.guild.blacklist[parameters[1]].indexOf(parameters[2]);
                 imports.local.guild.blacklist[parameters[1]].splice(index, 1);
                 if (imports.local.guild.blacklist[parameters[1]].length == 0) { delete imports.local.guild.blacklist[parameters[1]] }
-                embed.setDescription(`**${member.user.tag}** is nolonger blacklisted from using the **${parameters[2]}** command`);
+                embed.setDescription(`**${member.user.tag}** is no longer blacklisted from using the **${parameters[2]}** command`);
             }
 
             else { embed.setDescription(`that command isn't blacklisted`) }
@@ -91,7 +91,7 @@ module.exports = {
             if (imports.local.guild.blacklist[parameters[1]]) {
                 let embed1 = new Discord.MessageEmbed();
                 embed1.setColor(imports.local.guild.colors.accent);
-                embed1.setDescription(`confirm by typing \`${imports.local.guild.config.prefix}accept\``);
+                embed1.setDescription(`confirm by typing \`${imports.local.guild.prefix}accept\``);
                 let message = await imports.channel.send(embed1);
                 let requestResponse = await imports.awaitRequest(imports.guild.id, imports.channel.id, imports.user.id);
                 

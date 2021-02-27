@@ -9,8 +9,9 @@ let excluded = require('./excluded.json');
 
 function trace() {
     let error = new Error();
-    let path = error.stack.split('\n')[3].match(/\(([^()]+)\)/g)[0].slice(1, -1);
-    let location = path.split('\\')[path.split('\\').length - 1];
+    //console.info(error.stack.split('\n')[3]);
+    let location = error.stack.split('\n')[3].split('\\')[error.stack.split('\n')[3].split('\\').length - 1];
+    if (location.endsWith(')')) { location.slice(0, -1) }
     return location;
 }
 
