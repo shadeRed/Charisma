@@ -24,8 +24,8 @@ module.exports = {
         let karma = await context.data.karma.get(member.id);
         let experience = (await context.data.experience.get(member.id)).user;
 
-        let currentLevel = context.experience.expToLevel(experience, 2);
-        let relative = context.experience.getRelative(experience, 2)
+        let currentLevel = context.experience.expToLevel(experience, 4);
+        let relative = context.experience.getRelative(experience, 4)
 
         if (member.id != context.member.id) { embed.setAuthor(`requested by ${context.user.tag}`, context.user.avatarURL({ dynamic: true })) }
 

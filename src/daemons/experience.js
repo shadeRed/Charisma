@@ -58,7 +58,7 @@ module.exports = function(context) {
             async function processExp(scope) {
                 let factor;
                 if (scope == 'local') { factor = imports.local.guild.leveling.localCurve }
-                else if (scope == 'global') { factor = 2 }
+                else if (scope == 'global') { factor = 4 }
 
                 let curExp;
                 if (scope == 'local') {
