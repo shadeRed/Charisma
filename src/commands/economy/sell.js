@@ -1,5 +1,4 @@
 var Discord = require('discord.js');
-var emoji = require('node-emoji');
 
 module.exports = {
     config: {

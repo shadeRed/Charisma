@@ -1,5 +1,5 @@
 let fs = require('fs');
-let emoji = require('node-emoji');
+let emoji = require('discord-emoji-converter');
 
 let items = {};
 let tables = {};
@@ -48,7 +48,7 @@ module.exports = async function(imports) {
 
     imports.itemFromEmoji = function(emote) {
         let toReturn = null;
-        for (let i in imports.items) { if (imports.items[i].emoji == emoji.unemojify(emote).split(' ').join('')) { toReturn = i } }
+        for (let i in imports.items) { if (imports.items[i].emoji == emoji.getShortcode(emote).split(' ').join('')) { toReturn = i } }
         return toReturn;
     }
 
