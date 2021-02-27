@@ -4,7 +4,9 @@ module.exports = function(input, passthrough) {
     input = input.toLowerCase();
     let name = passthrough.commands.aliases.get(input) ? passthrough.commands.aliases.get(input) : input;
     let command = passthrough.commands.configs.get(name);
-    if (command) { output.value = name }
+
+    if (command && ((command.permissions.includes('BOT.MASTER') && passthrough.user.id == passthrough.config.main.master) || !command.permissions.includes('BOT.MASTER'))) { output.value = name }
     else { output.pass = false }
+
     return output;
 }
