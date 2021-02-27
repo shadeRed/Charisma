@@ -17,9 +17,11 @@ module.exports = {
                         let role = member.roles.cache.get(roles[permission]);
                         if (!role) { toReturn.userPerms = false }
                     }
+
+                    else { toReturn.userPerms = false; }
                 }
 
-                catch(e) {}
+                catch(e) { toReturn.userPerms = false; }
             }
         }
 
