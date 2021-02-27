@@ -197,8 +197,12 @@ module.exports = async function(imports, message) {
                     if (check != -1) {
                         
                         cmd.arguments = await command.evaluateParams(cmd.arguments, passthrough.commands.configs.get(cmd.name).params[check], passthrough);
-                        if (passthrough.commands.functions.get(cmd.name)[check].constructor.name === 'AsyncFunction') { await passthrough.commands.functions.get(cmd.name)[check](passthrough, cmd.arguments) }
-                        else { passthrough.commands.functions.get(cmd.name)[check](passthrough, cmd.arguments) }
+                        try {
+                            if (passthrough.commands.functions.get(cmd.name)[check].constructor.name === 'AsyncFunction') { await passthrough.commands.functions.get(cmd.name)[check](passthrough, cmd.arguments) }
+                            else { passthrough.commands.functions.get(cmd.name)[check](passthrough, cmd.arguments) }
+                        }
+
+                        catch(error) { console.error(error) }
 
                         if (cmd.object.cooldown) {
                             if (!passthrough.local.user.cooldowns[cmd.name]) { passthrough.local.user.cooldowns[cmd.name] = -1 }
