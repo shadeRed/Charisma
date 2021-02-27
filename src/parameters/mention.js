@@ -1,5 +1,5 @@
 // is a mention or start of the name/nick of a user
-module.exports = function(input, passthrough) {
+module.exports = async function(input, passthrough) {
     var output = { pass: true }
     if (input.startsWith('<@')) {
         var input = input.split('<@')[1].substring(0, input.split('<@')[1].length - 1);
@@ -7,7 +7,7 @@ module.exports = function(input, passthrough) {
     }
 
     else {
-        var members = passthrough.guild.members.cache.filter(function(member) { return (member.nickname && member.nickname.toLowerCase().includes(input)) || member.user.username.toLowerCase().includes(input) });
+        let members = (await passthrough.guild.members.fetch()).filter(function(member) { return (member.nickname && member.nickname.toLowerCase().includes(input)) || member.user.username.toLowerCase().includes(input) });
         if (members.array().length > 0) {
             var startsWith = members.filter(function(member) { return (member.nickname && member.nickname.toLowerCase().startsWith(input)) || member.user.username.toLowerCase().startsWith(input) });
             if (startsWith.array().length > 0) { input = startsWith.first().id }

@@ -50,15 +50,6 @@ global.console.error = function(out) {
     else { process.stdout.write(`${marker} ${out}\n`) }
 }
 
-//let priviledged_intents = new Discord.Intents(Discord.Intents.PRIVILEGED);
-let intents = new Discord.Intents(Discord.Intents.ALL);
-
-intents.add('GUILD_MESSAGES');
-intents.add('GUILD_MESSAGE_REACTIONS');
-intents.add('GUILDS');
-
-intents.add('GUILD_MEMBERS');
-
 let client = new Discord.Client({ ws: { intents: new Discord.Intents(Discord.Intents.ALL) } });
 
 let imports = {
