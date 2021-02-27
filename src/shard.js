@@ -11,7 +11,7 @@ function trace() {
     let error = new Error();
     //console.info(error.stack.split('\n')[3]);
     let location = error.stack.split('\n')[3].split('\\')[error.stack.split('\n')[3].split('\\').length - 1];
-    if (location.endsWith(')')) { location.slice(0, -1) }
+    if (location.endsWith(')')) { location = location.slice(0, -1) }
     return location;
 }
 
