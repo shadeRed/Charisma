@@ -72,10 +72,10 @@ module.exports = async function(imports) {
                 let count = 0;
                 let interval = setInterval(function() {
                     count += 1;
-                    if (imports.requests.get(guild).get(channel).get(user) == true) {
-                        imports.requests.get(guild).get(channel).delete(user);
-                        if (imports.requests.get(guild).get(channel).size == 0) { imports.requests.get(guild).delete(channel) }
-                        if (imports.requests.get(guild).size == 0) { imports.requests.delete(guild) }
+                    if (imports.requests.get(guild)?.get(channel)?.get(user) == true) {
+                        imports.requests.get(guild)?.get(channel)?.delete(user);
+                        if (imports.requests.get(guild)?.get(channel)?.size == 0) { imports.requests.get(guild)?.delete(channel) }
+                        if (imports.requests.get(guild)?.size == 0) { imports.requests.delete(guild) }
                         clearInterval(interval);
                         callback(sent);
                     }
