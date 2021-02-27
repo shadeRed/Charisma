@@ -12,6 +12,7 @@ module.exports = function(imports) {
         isAvailable: function(name) {
             var date = new Date();
             let item = imports.economy.items[name];
+            if (!item.shoppable) { return false }
             Math.seedrandom(`${date.getDate()}${name}`);
             var rarity = 3;
             if (item.tags.includes('uncommon')) { rarity = 6 }
