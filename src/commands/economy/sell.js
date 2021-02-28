@@ -31,24 +31,27 @@ module.exports = {
             let inventory = new context.inventory(context.user.id);
             await inventory.init();
 
-            let item = inventory.items.get(parameters[0]);
-            if (item) {
-                if (item.length < quantity) { embed.setDescription(`you don't have ${context.economy.items[parameters[0]].emoji}x${quantity}`) }
-                else {
-                    let value = context.shop.getValue(parameters[0]);
-                    let total = value * quantity;
-
-                    for (let q = 0; q < quantity; q++) { inventory.items.remove(parameters[0], 0) }
-                    let individuals = quantity == 1 ? '' : `*($${Math.floor(total / quantity)} each)*`;
-
-                    inventory.money.add(total);
-                    await inventory.append();
-
-                    embed.setDescription(`you sold ${context.economy.items[parameters[0]].emoji}x${quantity} and got **$${total}** ${individuals}`);
+            if (!(context.economy.items[parameters[0]].tags.includes('key') || context.economy.items[parameters[0]].tags.includes('container'))) {
+                if (inventory.items.has(parameters[0])) {
+                    if (inventory.items.get(parameters[0]) < quantity) { embed.setDescription(`you don't have ${context.economy.items[parameters[0]].emoji}x${quantity}`) }
+                    else {
+                        let value = context.shop.getValue(parameters[0]);
+                        let total = value * quantity;
+    
+                        inventory.items.remove(parameters[0], quantity);
+                        let individuals = quantity == 1 ? '' : ` *(${Math.floor(total / quantity)}g each)*`;
+    
+                        inventory.money.add(total);
+                        await inventory.append();
+    
+                        embed.setDescription(`you sold ${context.economy.items[parameters[0]].emoji}x${quantity} and got **${total}g**${individuals}`);
+                    }
                 }
+    
+                else { embed.setDescription(`you don't have any ${context.economy.items[parameters[0]].emoji}'s`) }
             }
 
-            else { embed.setDescription(`you don't have any ${context.economy.items[parameters[0]].emoji}'s`) }
+            else { embed.setDescription(`${context.economy.items[parameters[0]].emoji} isn't a sellable item`) }
 
             embed.setDescription(`${inventory.obtainedText(embed.description)}`);
             context.channel.send(embed);

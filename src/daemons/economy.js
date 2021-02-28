@@ -71,71 +71,55 @@ module.exports = async function(imports) {
 
         self.init = async function() {
             self.data = await imports.data._get('inventory', id);
-            for (let i in self.data.items) { for (let c = 0; c < self.data.items[i].length; c++) { if (self.data.items[i][c] == null) { self.data.items[i][c] = {} } } }
+            for (let i in self.data.items) { if (self.data.items[i] <= 0) { delete self.data.items[i] } }
             self.before = clone(self.data);
         }
 
         self.refresh = async function() { await self.init() }
 
         self.items = {
-            get: function(item) {
-                let result = null;
-                for (let i in self.data.items) { if (i == item) { result = self.data.items[i] } }
-                return result;
-            },
-
+            get: function(item) { return self.data.items[item] != undefined ? self.data.items[item] : null },
             getAll: function() { return self.data.items },
+            has: function(item) { return self.items.get(item) != null && self.items.get(item) != 0 },
 
-            has: function(item) { return self.items.get(item) != null },
+            add: function(item, qty) {
+                if (!items[item]) { throw new Error(`item "${item}" does not exist`) }
+                if (items[item].tags.includes('key')) { throw new Error(`item "${item}" is a key item`) }
 
-            add: function(item, meta) {
-                //if (!items[item]) { throw new Error(`item "${item}" does not exist`) }
-                if (!isNaN(meta)) {
-                    let num = parseInt(meta);
-                    meta = [];
-                    for (let i = 0; i < num; i++) { meta.push({}) }
-                }
+                if (!self.data.items[item]) { self.data.items[item] = qty }
+                else { self.data.items[item] += qty }
 
-                if (!(meta instanceof Array)) { meta = [meta] }
-
-                if (!self.data.items[item]) { self.data.items[item] = meta }
-                else { for (let i = 0; i < meta.length; i++) { self.data.items[item].push(meta[i]) } }
-
-                if (!self.data.obtained[item]) { self.data.obtained[item] = meta.length }
-                else { self.data.obtained[item] += meta.length }
+                if (!self.data.obtained[item]) { self.data.obtained[item] = qty }
+                else { self.data.obtained[item] += qty }
             },
 
-            remove: function(item, index) {
-                let i = 0;
-                if (index != undefined) { i = index }
-
+            remove: function(item, qty) {
+                if (!items[item]) { throw new Error(`item "${item}" does not exist`) }
+                if (items[item].tags.includes('key')) { throw new Error(`item "${item}" is a key item`) }
                 if (!self.data.items[item]) { throw new Error(`that user doesn't have item "${item}"`) }
-                if (!self.data.items[item][i]) { throw new Error(`that user has item "${item}" but not at index ${i}`) }
+                if (qty > self.data.items[item]) { throw new Error(`that user doesn't have that many of "${item}"`) }
 
-                self.data.items[item].splice(i, 1)
-                if (self.data.items[item].length == 0) { delete self.data.items[item] }
+                self.data.items[item] -= qty;
+
+                if (self.data.items[item] <= 0) { delete self.data.items[item] }
             },
 
             removeAll: function(item) {
-                if (!self.data.items[item]) { throw new Error(`that user doesn't have item "${item}"`) }
+                if (!items[item]) { throw new Error(`item "${item}" does not exist`) }
+                if (items[item].tags.includes('key') || items[item].tags.includes('container')) { throw new Error(`item "${item}" is not a normal item`) }
+                if (self.data.items[item] == undefined) { throw new Error(`that user does not have item "${item}"`) }
                 delete self.data.items[item];
             },
 
-            meta: function(item, index, meta) {
-                if (!self.data.items[item]) { throw new Error(`that user doesn't have item "${item}"`) }
-                if (!self.data.items[item][index]) { throw new Error(`that user has item "${item}" but not at index ${index}`) }
-                
-                self.data.items[item][index] = meta;
-            },
-
             obtained: function(item) {
-                if (!items[item]) { throw new Error(`item "${item}" doesn't exist`) }
-                return self.data.obtained[item] ? self.data.obtained[item] : 0;
+                if (!items[item]) { throw new Error(`item "${item}" does not exist`) }
+                if (items[item].tags.includes('key')) { throw new Error(`item "${item}" is a key item`) }
+                return self.data.obtained[item] != undefined ? self.data.obtained[item] : 0;
             }
         }
 
 
-        self.obtainedText = function(str) {
+        self.obtainedText = function(str, force) {
             function parse(s, i) {
                 let chars = s.split('');
                 for (let c = 0; c < chars.length; c++) {
@@ -174,30 +158,64 @@ module.exports = async function(imports) {
                 return s;
             }
         
-            for (let i in items) {
-                if (str.includes(items[i].emoji) && self.items.obtained(i) == 1) { str = parse(str, i) }
-            }
+            // if first item obtained or item is a key item
+            for (let i in items) { if (str.includes(items[i].emoji) && ((items[i].tags.includes('key') || items[i].tags.includes('container')) || self.items.obtained(i) == 1 || force)) { str = parse(str, i) } }
         
             return str;
         }
 
         self.keys = {
-            get: function(item) { return self.data.key[item] ? self.data.key[item] : null },
-            getAll: function() { return self.data.key },
-            has: function(item) { return self.keys.get(item) != null },
-            set: function(item, index) {
-                if (!self.data.items[item]) { throw new Error(`that user doesn't have item "${item}"`) }
-                if (!self.data.items[item][index]) { throw new Error(`that user has item "${item}" but not at index ${index}`) }
-
-                if (self.data.key[item]) { self.keys.remove(item) }
-                self.data.key[item] = self.items.get(item)[index];
-                self.items.remove(item, index);
+            get: function(item) {
+                if (!items[item]) { throw new Error(`item "${item}" does not exist`) }
+                if (!items[item].tags.includes('key')) { throw new Error(`item "${item}" is not a key item`) }
+                return self.data.key[item] != undefined ? self.data.key[item] : null;
             },
 
-            remove: function(item) {
-                if (!self.data.key[item]) { throw new Error(`that user doesn't have any item "${item}" equipped`) }
-                self.items.add(item, self.data.key[item]);
-                delete self.data.key[item];
+            getAll: function() { return self.data.key },
+            has: function(item) { return self.keys.get(item) != null },
+
+            add: function(item) {
+                if (!items[item]) { throw new Error(`item "${item}" does not exist`) }
+                if (!items[item].tags.includes('key')) { throw new Error(`item "${item}" is not a key item`) }
+                if (self.data.key[item] != undefined) { throw new Error(`that user already has key item "${item}"`) }
+                self.data.key[item] = {};
+            },
+
+            set: function(item, obj) {
+                if (!items[item]) { throw new Error(`item "${item}" does not exist`) }
+                if (!items[item].tags.includes('key')) { throw new Error(`item "${item}" is not a key item`) }
+                if (self.data.key[item] == undefined) { throw new Error(`that user does not have key item "${item}"`) }
+
+                self.data.key[item] = obj;
+            }
+        }
+
+        self.containers = {
+            get: function(item) {
+                if (!items[item]) { throw new Error(`item "${item}" does not exist`) }
+                if (!items[item].tags.includes('container')) { throw new Error(`item "${item}" is not a container`) }
+
+                return self.data.containers[item] != undefined ? self.data.containers[item] : [];
+            },
+
+            getAll: function() { return self.data.containers },
+            has: function(item) { return self.containers.get(item).length > 0 },
+
+            add: function(item, obj) {
+                if (!items[item]) { throw new Error(`item "${item}" does not exist`) }
+                if (!items[item].tags.includes('container')) { throw new Error(`item "${item}" is not a container`) }
+                if (self.data.containers[item] == undefined) { self.data.containers[item] = [obj] }
+                else { self.data.containers[item].push(obj) }
+            },
+
+            remove: function(item, index) {
+                if (!items[item]) { throw new Error(`item "${item}" does not exist`) }
+                if (!items[item].tags.includes('container')) { throw new Error(`item "${item}" is not a container`) }
+                if (self.data.containers[item] == undefined) { throw new Error(`that user does not have any "${item}" containers`) }
+                if (self.data.containers[item][index] == undefined) { throw new Error(`that user does not have a "${item}" container at index ${index}`) }
+
+                self.data.containers[item].splice(index, 1);
+                if (self.data.containers[item].length == 0) { delete self.data.containers[item] }
             }
         }
 

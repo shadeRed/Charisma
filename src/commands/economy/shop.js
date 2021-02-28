@@ -87,7 +87,7 @@ module.exports = {
             else {
                 for (var i = 0; i < 20; i++) {
                     if (shoppableArray[(page * 20) + i]) {
-                        resultArray.push(`${shoppableArray[(page * 20) + i].emoji} ${names[(page * 20) + i]} **$${shoppableArray[(page * 20) + i].value}**`)
+                        resultArray.push(`${shoppableArray[(page * 20) + i].emoji} ${names[(page * 20) + i]} **${shoppableArray[(page * 20) + i].value}g**`)
                     }
                 }
             }
@@ -134,7 +134,7 @@ module.exports = {
             else {
                 for (var i = 0; i < 20; i++) {
                     if (shoppableArray[(page * 20) + i]) {
-                        resultArray.push(`${shoppableArray[(page * 20) + i].emoji} ${names[(page * 20) + i]} : **$${shoppableArray[(page * 20) + i].value}**`);
+                        resultArray.push(`${shoppableArray[(page * 20) + i].emoji} ${names[(page * 20) + i]} : **${shoppableArray[(page * 20) + i].value}g**`);
                     }
                 }
             }

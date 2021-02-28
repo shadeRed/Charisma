@@ -32,10 +32,13 @@ module.exports = {
             let price = context.shop.getPrice(name);
             let balance = inventory.money.get();
             if (balance >= (price * quantity)) {
-                if (!inventory.items.get(name) || inventory.items.get(name).length + quantity <= 1000000) {
+                if (inventory.items.get(name) == undefined || inventory.items.get(name) + quantity <= 1000000) {
                     inventory.money.remove(price * quantity);
                     inventory.items.add(name, quantity);
-                    embed.setDescription(`you purchased ${item.emoji}x${quantity}`);
+
+                    let individual = quantity == 1 ? '' : ` *(${price}g each)*`;
+
+                    embed.setDescription(`you purchased ${item.emoji}x${quantity} for **${price * quantity}g**${individual}`);
                 }
 
                 else { embed.setDescription(`you can't buy that much ${item.emoji}`); }

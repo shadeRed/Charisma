@@ -9,14 +9,8 @@ module.exports = {
         tags: ['economy'],
         params: [
             [
-                { type: 'string', required: true, value: 'item' },
-                { type: 'item', required: true, name: 'item' },
+                { type: 'item', required: true, name: 'container' },
                 { type: 'number', required: false, name: 'slot' }
-            ],
-
-            [
-                { type: 'string', required: true, value: 'key' },
-                { type: 'item', required: true, name: 'item' }
             ]
         ]
     },
@@ -27,62 +21,33 @@ module.exports = {
 
             let embed = new Discord.MessageEmbed();
             embed.setColor(context.local.guild.colors.accent);
-            let inspected;
-            let inventory = await context.data.inventory.get(context.user.id);
-            if (inventory.items[parameters[1]]) {
-                let slot = 0;
-                if (parameters[2]) { slot = parseInt(parameters[2]) - 1 }
-                if (slot < 0 || (inventory.items[parameters[1]] && slot > inventory.items[parameters[1]].length - 1)) { slot = 0 }
-                inspected = inventory.items[parameters[1]][slot];
-                embed.setFooter(`${parameters[1]} @ items > slot ${slot+1}`);
-            }
 
-            else { embed.setDescription(`you don't have that in an item slot!`) }
+            if (items[parameters[0]].tags.includes('container')) {
+                let inventory = new context.inventory(context.user.id);
+                await inventory.init();
 
-            if (inspected) {
-                if (inspected.items) {
-                    let contains = {};
-                    let containsArr = [];
-                    for (let i in inspected.items) {
-                        if (!contains[i]) { contains[i] = 0 }
-                        contains[i] += 1;
+                if (inventory.containers.has(parameters[0])) {
+                    let slot = 1;
+                    if (parameters[1] > 1) { slot = parameters[1] }
+                    let containers = inventory.containers.get(parameters[0]);
+                    if (containers[slot-1] != undefined) {
+                        let contents = containers[slot-1].items;
+                        let arr = [];
+
+                        for (let c in contents) { arr.push(`${items[c].emoji}x${contents[c]}`) }
+
+                        embed.setDescription(arr.join(' '));
+                        embed.setFooter(`${parameters[0]} @ slot ${slot}`);
                     }
 
-                    for (let c in contains) { containsArr.push(`${items[c].emoji}x${contains[c]}`) }
-                    if (containsArr.length == 0) { containsArr.push(`<empty>`) }
-
-                    embed.addField(`contains`, containsArr.join(' '), true);
+                    else { embed.setDescription(`you don't have a ${items[parameters[0]].emoji} @ slot ${slot}`) }
                 }
+
+                else { embed.setDescription(`you don't have any ${items[parameters[0]].emoji}`) }
             }
-    
-            context.channel.send(embed);
-        },
 
-        async function(context, parameters) {
-            let embed = new Discord.MessageEmbed();
-            embed.setColor(context.local.guild.colors.accent);
-            let inspected;
-            let inventory = await context.data.inventory.get(context.user.id);
-    
-            if (inventory.key[parameters[1]]) { inspected = inventory.key[parameters[1]] }
-            else { embed.setDescription(`you don't have that item in a key slot!`) }
+            else { embed.setDescription(`${items[parameters[0]].emoji} isn't a type of container`) }
 
-            if (inspected) {
-                if (inspected.items) {
-                    let contains = {};
-                    let containsArr = [];
-                    for (let i in inspected.items) {
-                        if (!contains[i]) { contains[i] = 0 }
-                        contains[i] += 1;
-                    }
-
-                    for (let c in contains) { containsArr.push(`${items[c].emoji}x${contains[c]}`) }
-                    if (containsArr.length == 0) { containsArr.push(`<empty>`) }
-
-                    embed.addField(`contains`, containsArr.join(' '), true);
-                }
-            }
-    
             context.channel.send(embed);
         }
     ]

@@ -201,9 +201,7 @@ module.exports = async function(imports) {
                 return user;
             },
 
-            update: async function(id, data) {
-                await imports.data._update('user', id, data);
-            }
+            update: async function(id, data) { await imports.data._update('user', id, data) }
         },
 
         experience: {
@@ -212,9 +210,7 @@ module.exports = async function(imports) {
                 return exp;
             },
 
-            update: async function(id, data) {
-                await imports.data._update('experience', id, data);
-            }
+            update: async function(id, data) { await imports.data._update('experience', id, data) }
         },
 
         inventory: {
@@ -223,139 +219,7 @@ module.exports = async function(imports) {
                 return inventory;
             },
 
-            item: {
-                get: async function(id, item) {
-                    let inventory = await imports.data.inventory.get(id);
-                    let toReturn = null;
-                    for (let i in inventory.items) { if (i == item) { toReturn = inventory.items[i] } }
-                    return toReturn;
-                },
-
-                async function(id, item) { return await this.get(id, item) != null },
-
-                add: async function(id, item, meta) {
-                    if (!isNaN(meta)) {
-                        let num = parseInt(meta);
-                        meta = [];
-                        for (let i = 0; i < num; i++) { meta.push({}) }
-                    }
-
-                    if (!Array.isArray(meta)) { meta = [meta] }
-
-                    let inventory = await imports.data.inventory.get(id);
-                    if (!inventory.items[item]) { inventory.items[item] = meta }
-                    else { for (let i = 0; i < meta.length; i++) { inventory.items[item].push(meta[i]) } }
-                    if (!inventory.obtained[item]) { inventory.obtained[item] = meta.length }
-                    else { inventory.obtained[item] += meta.length }
-
-                    await imports.data._update('inventory', id, inventory);
-                },
-
-                addMany: async function(id, itemsObj) {
-                    let inventory = await imports.data.inventory.get(id);
-                    for (let i in itemsObj) {
-                        if (!inventory.items[i]) { inventory.items[i] = itemsObj[i] }
-                        else { for (let m = 0; m < itemsObj[i].length; m++) { inventory.items[i].push(itemsObj[i][m]) } }
-                    }
-
-                    await imports.data._update('inventory', id, inventory);
-                },
-
-                remove: async function(id, item, index) {
-                    let inventory = await imports.data.inventory.get(id);
-                    console.log(inventory);
-                    let i = 0;
-                    if (index) { i = index }
-
-                    if (inventory.items[item]) { inventory.items[item].splice(i, 1) }
-                    if (inventory.items[item].length == 0) { delete inventory.items[item] }
-
-                    await imports.data._update('inventory', id, inventory);
-                },
-
-                setMeta: async function(id, item, index, meta) {
-                    let inventory = await imports.data.inventory.get(id);
-                    inventory.items[item][index] = meta;
-
-                    await imports.data._update('inventory', id, inventory);
-                },
-
-                /*
-
-                */
-
-                obtained: {
-                    /*get: async function(id, item) {
-                        let inventory = await imports.data.inventory.get(id);
-                        let toReturn = 0;
-                        if (inventory.obtained[item]) { toReturn = inventory.obtained[item] }
-                        return toReturn;
-                    },
-
-                    delete: async function(id, item) {
-                        let inventory = await imports.data.inventory.get(id);
-                        if (inventory.obtained[item]) { delete inventory.obtained[item] }
-                        await rethink.db(name).table('inventory').get(id).replace(inventory).run(connection);
-                    },
-
-                    deleteAll: async function(id) {
-                        let inventory = await imports.data.inventory.get(id);
-                        inventory.obtained = {};
-                        await rethink.db(name).table('inventory').get(id).replace(inventory).run(connection);
-                    }*/
-                }
-            },
-
-            key: {
-                get: async function(id, item) {
-                    let inventory = await imports.data.inventory.get(id);
-                    let toReturn = null;
-                    if (inventory.key[item]) { toReturn = inventory.key[item] }
-                    return toReturn;
-                },
-
-                set: async function(id, item, meta) {
-                    let inventory = await imports.data.inventory.get(id);
-                    if (inventory.key[item]) {
-                        await imports.data.inventory.item.add(id, item, meta);
-                        inventory.key[item] = meta;
-                    }
-
-                    else { inventory.key[item] = meta }
-
-                    await imports.data._update('inventory', id, inventory);
-                },
-
-                remove: async function(id, item) {
-                    let inventory = await imports.data.inventory.get(id);
-                    if (inventory.key[item]) { await imports.data.inventory.item.add(id, item, inventory.key[item]) }
-                    delete inventory.key[item];
-
-                    await imports.data._update('inventory', id, inventory);
-                }
-            },
-
-            money: {
-                get: async function(id) {
-                    let inventory = await imports.data.inventory.get(id);
-                    return inventory.balance;
-                },
-
-                add: async function(id, money) {
-                    let balance = await this.get(id);
-                    balance += money;
-
-                    await imports.data._update('inventory', id, { balance: balance });
-                },
-
-                remove: async function(id, money) {
-                    let balance = await this.get(id);
-                    balance -= money;
-                    if (balance < 0) { balance = 0 }
-
-                    await imports.data._update('inventory', id, { balance: balance });
-                }
-            }
+            update: async function(id, data) { await imports.data._update('inventory', id, data) }
         }
     }
 }

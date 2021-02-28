@@ -29,11 +29,11 @@ module.exports = {
         await to.init();
 
         if (parameters[1] > 5000) {
-            embed.setDescription(`you're attempting to pay someone more than **$5000**`);
+            embed.setDescription(`you're attempting to pay someone more than **5000g**`);
             context.request(context, embed, async function(sent) {
                 let response = new Discord.MessageEmbed();
                 response.setColor(context.local.guild.colors.accent);
-                response.setDescription(`you payed **${user.tag} $${parameters[1]}**~!`);
+                response.setDescription(`you payed **${user.tag} ${parameters[1]}g**~!`);
 
                 await from.refresh();
                 await to.refresh();
@@ -49,7 +49,7 @@ module.exports = {
         }
 
         else {
-            embed.setDescription(`you payed **${user.tag} $${parameters[1]}**~!`);
+            embed.setDescription(`you payed **${user.tag} ${parameters[1]}g**~!`);
 
             from.money.remove(parameters[1]);
             to.money.add(parameters[1]);

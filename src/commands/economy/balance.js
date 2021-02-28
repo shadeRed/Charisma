@@ -19,7 +19,7 @@ module.exports = {
         await inventory.init();
         let balance = inventory.money.get();
 
-        embed.setDescription(`$${balance}`);
+        embed.setDescription(`${balance}g`);
         context.channel.send(embed);
     }
 }

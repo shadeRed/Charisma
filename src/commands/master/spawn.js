@@ -23,6 +23,12 @@ module.exports = {
                 { type: 'item', required: true },
                 { type: 'number', required: false, name: 'quantity' },
                 { type: 'mention', required: false } 
+            ],
+
+            [
+                { type: 'string', required: true, value: 'key' },
+                { type: 'item', required: true, name: 'item' },
+                { type: 'mention', required: false }
             ]
         ]
     },
@@ -64,17 +70,49 @@ module.exports = {
     
             let item = parameters[1];
 
-            let count = parameters[2] || 1;
-            //if (parameters[2]) { count = parameters[2] }
-            //if (count < 1) { count = 1 }
+            if (!context.economy.items[item].tags.includes('key') && !context.economy.items[item].tags.includes('container')) {
+                let count = parameters[2] || 1;
+                //if (parameters[2]) { count = parameters[2] }
+                //if (count < 1) { count = 1 }
+    
+                let inventory = new context.inventory(member.id);
+                await inventory.init();
+                inventory.items.add(item, count);
+                await inventory.append();
+    
+                if (member.id == context.user.id) { embed.setDescription(`you gave yourself ${context.economy.items[item].emoji}x${count}`) }
+                else { embed.setDescription(`**${member.user.tag}** was given ${context.economy.items[item].emoji}x${count}`) }
+            }
 
-            let inventory = new context.inventory(member.id);
-            await inventory.init();
-            inventory.items.add(item, count);
-            await inventory.append();
+            else { embed.setDescription(`${context.economy.items[item].emoji} is not a normal item`) }
 
-            if (member.id == context.user.id) { embed.setDescription(`you gave yourself ${count}x${context.economy.items[item].emoji}`) }
-            else { embed.setDescription(`**${member.user.tag}** was given ${count}x${context.economy.items[item].emoji}`) }
+            context.channel.send(embed);
+        },
+
+        // key <item> [mention]
+        async function(context, parameters) {
+            let embed = new Discord.MessageEmbed();
+            embed.setColor(context.local.guild.colors.accent);
+
+            if (context.economy.items[parameters[1]].tags.includes('key')) {
+                let member = context.member;
+                if (parameters[2]) { member = await context.guild.members.fetch(parameters[2]) }
+
+                try {
+                    let inventory = new context.inventory(member.id);
+                    await inventory.init();
+                    inventory.keys.add(parameters[1]);
+
+                    if (member.id == context.user.id) { embed.setDescription(`you gave yourself ${context.economy.items[parameters[1]].emoji}`) }
+                    else { embed.setDescription(`**${member.user.tag}** was given ${context.economy.items[parameters[1]].emoji}`) }
+
+                    await inventory.append();
+                }
+
+                catch(e) { console.error(e); embed.setDescription(`an error occured!`) }
+            }
+
+            else { embed.setDescription(`${context.economy.items[parameters[1]].emoji} is not a key item`) }
 
             context.channel.send(embed);
         }

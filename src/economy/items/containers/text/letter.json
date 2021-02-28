@@ -2,5 +2,5 @@
     "emoji": ":envelope:",
     "value": 77,
     "shoppable": true,
-    "tags": ["memo"]
+    "tags": ["memo", "container"]
 }

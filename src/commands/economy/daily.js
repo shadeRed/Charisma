@@ -69,7 +69,7 @@ module.exports = {
             await inventory.init();
             inventory.money.add(200);
             context.local.user.daily = day;
-            embed.setDescription(`**$200** was added to your balance`);
+            embed.setDescription(`**200g** was added to your balance`);
             await inventory.append();
         }
 

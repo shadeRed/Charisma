@@ -54,58 +54,56 @@ module.exports = {
 
         let inventory = new context.inventory(context.user.id);
         await inventory.init();
-        let pole = inventory.keys.get('fishingpole');
         
         let table = clone(context.economy.tables.fishing.default);
         let items = context.economy.items;
 
-        let bait = false;
+        if (inventory.keys.has('fishingpole')) {
+            let bait = false;
+            /*
+                //Our number.
+                var number = 120;
+                
+                //The percent that we want to get.
+                //i.e. We want to get 50% of 120.
+                var percentToGet = 50;
+                
+                //Calculate the percent.
+                var percent = (percentToGet / 100) * number;
+                
+                //Alert it out for demonstration purposes.
+                alert(percentToGet + "% of " + number + " is " + percent);
+                
+                //The result: 50% of 120 is 60
+            */
 
-        /*
-        //Our number.
-var number = 120;
- 
-//The percent that we want to get.
-//i.e. We want to get 50% of 120.
-var percentToGet = 50;
- 
-//Calculate the percent.
-var percent = (percentToGet / 100) * number;
- 
-//Alert it out for demonstration purposes.
-alert(percentToGet + "% of " + number + " is " + percent);
- 
-//The result: 50% of 120 is 60 */
+            if (inventory.items.has('bait')) { bait = (Math.random() * 100) > 25 }
 
-        if (inventory.items.has('bait')) { bait = (Math.random() * 100) > 25 }
-
-        if (pole) {
+        
             if (bait) { for (let t in table) { if (table[t] > 250) { delete table[t] } } }
             let roll = get(table);
 
-            let meta = {};
+            
             //if (dialogue[roll]) { embed.setDescription(dialogue[roll]) }
 
             if (roll == 'lootbag') {
+                let meta = { items: {} };
+
                 let lootTable = context.economy.tables.lootbag.fishing;
-                let contents = [];
-                meta.items = {};
 
                 let count = Math.floor(Math.random() * 10) + 10;
                 for (let c = 0; c < count; c++) {
                     let bagRoll = get(lootTable);
-                    contents.push(bagRoll);
+                    if (meta.items[bagRoll] == undefined) { meta.items[bagRoll] = 1 }
+                    else { meta.items[bagRoll] += 1 }
                 }
 
-                for (let c = 0; c < contents.length; c++) {
-                    if (!meta.items[contents[c]]) { meta.items[contents[c]] = [] }
-                    meta.items[contents[c]].push({});
-                }
+                inventory.containers.add('lootbag', meta);
             }
 
-            embed.setDescription(`you caught a ${items[roll].emoji}${bait ? ' using a :meat_on_bone:': ''}!`);
+            else { inventory.items.add(roll, 1) }
 
-            inventory.items.add(roll, meta);
+            embed.setDescription(`you caught a ${items[roll].emoji}${bait ? ' using a :meat_on_bone:': ''}!`);
             if (bait) { inventory.items.remove('bait') }
         }
 
